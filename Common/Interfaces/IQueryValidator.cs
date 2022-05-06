@@ -2,7 +2,7 @@
 
 namespace Common.Interfaces
 {
-	public interface IQueryDecorator<TModel, TResponse> : IRequestPreProcessor<TModel>
+	public interface IQueryValidator<TModel, TResponse> : IRequestPreProcessor<TModel>
 	where TModel : IQuery<TResponse>
 	{
 	}

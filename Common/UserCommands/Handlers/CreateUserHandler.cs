@@ -16,9 +16,8 @@ namespace Common.UserCommands.Handlers
 	    {
 		    IRepository<CreateUserCommand, int> repo =
 			    repositoryFactory.GetRepository<CreateUserCommand, int>();
-		    int id = await repo.ExecuteAsync(request);
 
-			return id;
-        }
+			return await repo.ExecuteAsync(request);
+		}
     }
 }

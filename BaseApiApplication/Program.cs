@@ -19,12 +19,13 @@ builder.Services.AddMediatR(typeof(GetUserQuery).Assembly);
 builder.Services.AddDbContext<MainContext>(opt => opt.UseInMemoryDatabase("TestDb"));
 builder.Services.AddAutoMapper(typeof(DbToViewModelProfile));
 
-// Register context
+// Register DB context
 builder.Services.AddScoped<IMainContext, MainContext>();
 
 // Register repository
 builder.Services.AddScoped<IRepositoryFactory, RepositoryFactory>();
 
+// Register service provider
 IServiceProvider serviceProvider = builder.Services.BuildServiceProvider();
 builder.Services.AddSingleton<IServiceProvider>(serviceProvider);
 

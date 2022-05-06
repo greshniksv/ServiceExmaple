@@ -13,14 +13,14 @@ namespace Common.Factories
 			this.serviceProvider = serviceProvider;
 		}
 
-		public IRepository<TRequest, TResponse> GetRepository<TRequest, TResponse>()
-			where TRequest : class
+		public IRepository<TModel, TResponse> GetRepository<TModel, TResponse>()
+			where TModel : class
 		{
 			List<Type>? allTypesOfIRepository =
 				(from x in AppDomain.CurrentDomain.GetAssemblies()
 					.SelectMany(s => s.GetTypes())
 				 where !x.IsAbstract && !x.IsInterface &&
-					   x.GetInterfaces().FirstOrDefault() == typeof(IRepository<TRequest, TResponse>)
+					   x.GetInterfaces().FirstOrDefault() == typeof(IRepository<TModel, TResponse>)
 				 select x).ToList();
 
 			if (allTypesOfIRepository.Count > 1)
@@ -33,7 +33,7 @@ namespace Common.Factories
 				throw new Exception("Not found repository");
 			}
 
-			return (IRepository<TRequest, TResponse>)ActivatorUtilities.CreateInstance(serviceProvider, allTypesOfIRepository[0]);
+			return (IRepository<TModel, TResponse>)ActivatorUtilities.CreateInstance(serviceProvider, allTypesOfIRepository[0]);
 		}
 	}
 }

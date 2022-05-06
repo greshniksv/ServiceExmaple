@@ -1,4 +1,5 @@
 using Common.UserCommands;
+using Common.UserNotifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Common.UserQueries;
@@ -31,6 +32,8 @@ namespace BaseApiApplication.Controllers
 	        try
 	        {
 		        int id = await mediator.Send(model);
+
+		        await mediator.Send(new SendMailNotify { Email = "123" });
 
 		        return Ok(id);
 	        }

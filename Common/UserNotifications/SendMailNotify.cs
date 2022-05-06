@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using Common.Interfaces;
 
 namespace Common.UserNotifications
 {
-    public class SendMailNotification : INotification
+    public class SendMailNotify : INotify
     {
         public string Email { get; set; }
     }

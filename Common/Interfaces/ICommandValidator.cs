@@ -2,7 +2,7 @@
 
 namespace Common.Interfaces
 {
-    public interface ICommandDecorator<TModel, TResponce> : IRequestPreProcessor<TModel>
+    public interface ICommandValidator<TModel, TResponce> : IRequestPreProcessor<TModel>
     where TModel : ICommand<TResponce>
     {
     }

@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Roslynator", "RCS1046:Asynchronous method name should end with 'Async'.", Justification = "<Pending>", Scope = "member", Target = "~M:Common.UserCommands.Decorators.CreateUserDecorator.Process(Common.Commands.CreateUserCommand,System.Threading.CancellationToken)~System.Threading.Tasks.Task")]
+[assembly: SuppressMessage("Roslynator", "RCS1046:Asynchronous method name should end with 'Async'.", Justification = "<Pending>", Scope = "member", Target = "~M:Common.UserCommands.Decorators.CreateUserValidator.Process(Common.Commands.CreateUserCommand,System.Threading.CancellationToken)~System.Threading.Tasks.Task")]
