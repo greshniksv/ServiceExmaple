@@ -1,0 +1,63 @@
+using BLL.UserCommands;
+using BLL.UserNotifications;
+using BLL.UserQueries;
+using BLL.Validation;
+using BLL.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Application.Controllers
+{
+	[ApiController]
+	[Authorize]
+	[Route("[controller]")]
+	public class UserController : ControllerBase
+	{
+		private readonly Serilog.ILogger logger;
+		private readonly IMediator mediator;
+		private readonly IValidationService validationService;
+
+		public UserController(
+			IValidationService validationService,
+			Serilog.ILogger logger,
+			IMediator mediator)
+		{
+			this.logger = logger;
+			this.mediator = mediator;
+			this.validationService = validationService;
+		}
+
+		[AllowAnonymous]
+		[HttpPost()]
+		public async Task<IActionResult> Create(CreateUserCommand model)
+		{
+			int recordId = await mediator.Send(model);
+
+			logger.Information($"Created user: {recordId.ToString()}");
+			return StatusCode(StatusCodes.Status201Created, new { UserId = recordId });
+		}
+
+		[AllowAnonymous]
+		[HttpGet("{id:int}")]
+		public async Task<IActionResult> Get(int id)
+		{
+			UserModel? userModel = await mediator.Send(new GetUserQuery(id));
+
+			if (userModel == null)
+			{
+				return NotFound("User not found");
+			}
+
+			return Ok(userModel);
+		}
+
+		[AllowAnonymous]
+		[HttpGet("{mail}")]
+		public async Task<ActionResult> Notify(string mail)
+		{
+			await mediator.Send(new SendMailNotify(mail));
+			return Ok();
+		}
+	}
+}
