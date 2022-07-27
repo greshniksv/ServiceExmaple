@@ -1,7 +1,6 @@
 using BLL.UserCommands;
 using BLL.UserNotifications;
 using BLL.UserQueries;
-using BLL.Validation;
 using BLL.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -16,16 +15,13 @@ namespace Application.Controllers
 	{
 		private readonly Serilog.ILogger logger;
 		private readonly IMediator mediator;
-		private readonly IValidationService validationService;
 
 		public UserController(
-			IValidationService validationService,
 			Serilog.ILogger logger,
 			IMediator mediator)
 		{
 			this.logger = logger;
 			this.mediator = mediator;
-			this.validationService = validationService;
 		}
 
 		[AllowAnonymous]

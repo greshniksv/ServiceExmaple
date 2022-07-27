@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using BLL.Models;
 using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Diagnostics;
 
 namespace Application.Extensions
@@ -14,7 +13,8 @@ namespace Application.Extensions
 			{
 				appError.Run(async context =>
 				{
-					var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+					IExceptionHandlerFeature contextFeature =
+						context.Features.Get<IExceptionHandlerFeature>();
 					if (contextFeature != null)
 					{
 						if (contextFeature.Error is ValidationException validationException)

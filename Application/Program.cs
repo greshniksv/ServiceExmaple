@@ -3,7 +3,6 @@ using BLL.AutoMapperProfiles;
 using BLL.Interfaces;
 using BLL.Options;
 using BLL.UserQueries;
-using BLL.Validation;
 using DAL.DbContexts;
 using DAL.Interfaces;
 using FluentValidation.AspNetCore;
@@ -23,6 +22,8 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
 Log.Logger = new LoggerConfiguration()
 	.ReadFrom.Configuration(configuration)
 	.CreateLogger();
+
+builder.WebHost.UseUrls(configuration["UseUrls"]);
 
 // Add services to the container.
 builder.Services.AddControllers().AddFluentValidation(
