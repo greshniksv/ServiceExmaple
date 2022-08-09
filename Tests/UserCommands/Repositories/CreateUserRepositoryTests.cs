@@ -57,7 +57,7 @@ namespace TestProject.UserCommands.Repositories
 
 		//	var returnedId = await repository.ExecuteAsync(user);
 
-		//	returnedId.Message.Should().BeEmpty();
+		//	returnedId.Error.Should().BeEmpty();
 		//}
 
 		[Theory, AutoMoqData]

@@ -1,3 +1,4 @@
+using BLL.Models;
 using BLL.UserCommands;
 using BLL.UserNotifications;
 using BLL.UserQueries;
@@ -31,7 +32,8 @@ namespace Application.Controllers
 			int recordId = await mediator.Send(model);
 
 			logger.Information($"Created user: {recordId.ToString()}");
-			return StatusCode(StatusCodes.Status201Created, new { UserId = recordId });
+			return StatusCode(StatusCodes.Status201Created, 
+				new HttpBaseResponse<object>(new { UserId = recordId }));
 		}
 
 		[AllowAnonymous]
@@ -42,10 +44,10 @@ namespace Application.Controllers
 
 			if (userModel == null)
 			{
-				return NotFound("User not found");
+				return NotFound(new HttpBaseResponse<object>(new ErrorModel("User not found")));
 			}
 
-			return Ok(userModel);
+			return Ok(new HttpBaseResponse<UserModel>(userModel));
 		}
 
 		[AllowAnonymous]

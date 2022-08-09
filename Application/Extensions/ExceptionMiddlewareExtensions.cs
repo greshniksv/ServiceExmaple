@@ -22,12 +22,12 @@ namespace Application.Extensions
 							context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 							context.Response.ContentType = "application/json";
 
-							List<ErrorModel> errors =
+							List<ValidationErrorModel> errors =
 								validationException.Errors.Select(x =>
-									new ErrorModel(x.PropertyName, x.ErrorMessage)).ToList();
+									new ValidationErrorModel(x.PropertyName, x.ErrorMessage)).ToList();
 
 							logger.Warning("Invalid input model: {@errors}", errors);
-							await context.Response.WriteAsJsonAsync(errors);
+							await context.Response.WriteAsJsonAsync(new HttpBaseResponse<object>(errors));
 						}
 						else
 						{
@@ -41,7 +41,7 @@ namespace Application.Extensions
 							}
 
 							await context.Response.WriteAsJsonAsync(
-								new InternalErrorModel(message));
+								new HttpBaseResponse<object>(new ErrorModel(message)));
 						}
 					}
 				});

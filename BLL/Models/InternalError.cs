@@ -1,4 +1,4 @@
 ﻿namespace BLL.Models
 {
-	public record InternalErrorModel(string Message);
+	public record InternalErrorModel(string Error);
 }
