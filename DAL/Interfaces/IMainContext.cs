@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Interfaces
 {
-	public interface IMainContext: IDisposable
+	public interface IMainContext: IDbContext, IDisposable
 	{
 		DbSet<User> Users { get; set; }
 
