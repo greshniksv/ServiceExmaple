@@ -4,12 +4,12 @@ using BLL.Interfaces;
 using BLL.Options;
 using BLL.UserQueries;
 using DAL.DbContexts;
+using DAL.DbModels;
 using DAL.Interfaces;
 using FluentValidation.AspNetCore;
-using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Serilog.Events;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -33,10 +33,40 @@ builder.Services.AddControllers().AddFluentValidation(
 		options.RegisterValidatorsFromAssembly(typeof(ICommand<>).Assembly);
 	});
 
+// Register service provider
+builder.Services.AddDbContext<IdentityContext>(opt =>
+	{
+		opt.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"))
+			.UseSnakeCaseNamingConvention();
+	})
+	.AddIdentity<ApplicationUser, ApplicationRole>(config =>
+	{
+		config.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\\";
+		config.Password.RequireDigit = false;
+		config.Password.RequiredLength = 6;
+		config.Password.RequireLowercase = false;
+		config.Password.RequireUppercase = false;
+		config.Password.RequireNonAlphanumeric = false;
+	})
+	.AddEntityFrameworkStores<IdentityContext>()
+	.AddSignInManager()
+	.AddDefaultTokenProviders();
+
+
+builder.Services.AddDbContext<MainContext>(opt =>
+{
+	opt.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"))
+		.UseSnakeCaseNamingConvention();
+});
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMediatR(typeof(GetUserQuery).Assembly);
+builder.Services.AddMediatR((config) =>
+{
+	config.RegisterServicesFromAssembly(typeof(GetUserQuery).Assembly);
+});
 builder.Services.AddDbContext<MainContext>(opt => opt.UseInMemoryDatabase("TestDb"));
 builder.Services.AddAutoMapper(typeof(DbToViewModelProfile), typeof(CommandToDbModelProfile));
 builder.Services.AddRepositories();
